@@ -396,6 +396,38 @@ function EnquiryForm({ service = "General enquiry", fields = "basic" }: { servic
   )
 }
 
+/* ─────────────────────────── Cookie consent ─────────────────────────── */
+
+function CookieConsent() {
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    if (!localStorage.getItem("radio7441-cookie-consent")) setShow(true)
+  }, [])
+
+  const choose = (value: "accepted" | "rejected") => {
+    localStorage.setItem("radio7441-cookie-consent", value)
+    setShow(false)
+  }
+
+  if (!show) return null
+
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-[60] px-4 pb-4">
+      <div className="mx-auto max-w-[640px] rounded-2xl border border-[#07152F]/10 bg-white p-5 shadow-[0_24px_80px_rgba(7,21,47,0.18)] sm:p-6">
+        <p className="font-serif text-lg text-[#07152F]">We respect your privacy</p>
+        <p className="mt-2 text-sm leading-6 text-[#35322F]/70">
+          Radio 7441 FM uses cookies to improve your experience and understand how the site is used. Choose &ldquo;Accept&rdquo; to allow all cookies, or &ldquo;Decline&rdquo; to keep only those essential to the site.
+        </p>
+        <div className="mt-4 flex flex-col gap-2 sm:flex-row-reverse">
+          <button onClick={() => choose("accepted")} className="rounded-full bg-[#F4BF25] px-5 py-2.5 text-sm font-semibold text-[#07152F] hover:bg-[#FFD21F]">Accept</button>
+          <button onClick={() => choose("rejected")} className="rounded-full border border-[#07152F]/15 bg-white px-5 py-2.5 text-sm font-semibold text-[#07152F] hover:border-[#123A70]">Decline</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ─────────────────────────── Page ─────────────────────────── */
 
 const navLinks: [string, string][] = [
@@ -427,6 +459,7 @@ export default function LandingPage() {
 
   return (
     <main id="home" className="min-h-screen overflow-hidden bg-[#F8F7F5] text-[#35322F]">
+      <CookieConsent />
       {/* Header */}
       <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
         <nav className="mx-auto flex max-w-[1000px] items-center justify-between rounded-full border border-[#07152F]/10 bg-[#F8F7F5]/90 px-4 py-2 shadow-sm backdrop-blur">
